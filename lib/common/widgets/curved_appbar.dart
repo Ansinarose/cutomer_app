@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  String title;
+ final String title;
   final List<Widget>? actions;
   final String? backgroundImage;
   final TextStyle? titleTextStyle;
@@ -13,6 +13,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
      required this.title,
     this.actions,
    this.backgroundImage, this.titleTextStyle
+  // ignore: unnecessary_null_comparison
   }) : assert(title != null || backgroundImage !=null),
   super(key: key);
 

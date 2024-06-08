@@ -1,56 +1,80 @@
-// lib/common/widgets/custom_text_form_field.dart
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
   final bool obscureText;
+  final IconData prefixIcon;
   final String? Function(String?)? validator;
-  final IconData? prefixIcon;
-  final Color? textColor;
-  final Color? hintcolor;
-  final Color? borderColor;
-
 
   const CustomTextFormField({
     Key? key,
     required this.labelText,
     required this.controller,
     this.obscureText = false,
-    this.validator, this.prefixIcon, 
-    this.textColor, this.hintcolor,
-     this.borderColor, required MaterialColor hintColor,
+    required this.prefixIcon,
+    this.validator,
   }) : super(key: key);
 
   @override
+  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool _isObscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscured = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        
-        labelText: labelText,
-        labelStyle: TextStyle(color:  hintcolor),
-        prefixIcon:prefixIcon != null ? Icon(prefixIcon,color:  hintcolor,)
-        :null
-          ,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: borderColor ??Color.fromARGB(255, 60, 9, 70),
-           ),
-           
-        ),
-        enabledBorder:  OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: borderColor ?? Color.fromARGB(255, 60, 9, 70)),
-          
-        ),
-    focusedBorder:  OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: borderColor ?? Colors.blue),
-        ),
+    Color textColor = Color.fromARGB(255, 60, 9, 70);
+    Color hintColor = Color.fromARGB(255, 60, 9, 70);
+    Color borderColor = Color.fromARGB(255, 60, 9, 70);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
-      validator: validator,
+      child: TextFormField(
+        controller: widget.controller,
+        obscureText: _isObscured,
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          prefixIcon: Icon(widget.prefixIcon, color: textColor),
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  icon: Icon(
+                    _isObscured ? Icons.visibility : Icons.visibility_off,
+                    color: textColor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isObscured = !_isObscured;
+                    });
+                  },
+                )
+              : null,
+          hintText: widget.labelText,
+          hintStyle: TextStyle(color: hintColor),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+        ),
+        style: TextStyle(color: textColor),
+        validator: widget.validator,
+      ),
     );
   }
 }
