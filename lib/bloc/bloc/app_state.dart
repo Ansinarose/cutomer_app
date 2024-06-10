@@ -1,11 +1,4 @@
-// part of 'app_bloc.dart';
 
-// @immutable
-// sealed class AppState {}
-
-// final class AppInitial extends AppState {}
-
-import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthState{}

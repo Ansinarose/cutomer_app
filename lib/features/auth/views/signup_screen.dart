@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       builder: (context, state) {
 
         if(state is Authenticated){
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       });
         }
@@ -68,6 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: 'Name',
                       controller: NameController,
                       prefixIcon: Icons.person,
+                      // ignore: body_might_complete_normally_nullable
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your Name';

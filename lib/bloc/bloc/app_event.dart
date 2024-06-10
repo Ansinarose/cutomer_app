@@ -1,6 +1,5 @@
 // lib/bloc/splash_event.dart
 import 'package:customer_application/features/auth/models/user_model.dart';
-import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent {}
 

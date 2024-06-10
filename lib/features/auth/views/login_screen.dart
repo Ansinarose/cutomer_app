@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
         if(state is Authenticated ){
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
            });
         }
@@ -72,16 +72,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 50), // Add some spacing from the top
+                    SizedBox(height: 50), 
                     Text('Login to your account', style: AppTextStyles.heading),
                     SizedBox(height: 20),
                     CustomTextFormField(
                       labelText: 'Email',
                       controller: emailController,
                       prefixIcon: Icons.email,
-                      // textColor: Color.fromARGB(255, 60, 9, 70),
-                      // hintColor: Color.fromARGB(255, 60, 9, 70),
-                      // borderColor:  Color.fromARGB(255, 60, 9, 70),
+                    
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';

@@ -4,7 +4,6 @@ import 'package:customer_application/bloc/bloc/app_event.dart';
 import 'package:customer_application/common/constants/app_button_styles.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/constants/app_text_styles.dart';
-import 'package:customer_application/features/auth/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

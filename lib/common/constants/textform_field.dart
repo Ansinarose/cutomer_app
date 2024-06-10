@@ -33,6 +33,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     Color textColor = Color.fromARGB(255, 60, 9, 70);
     Color hintColor = Color.fromARGB(255, 60, 9, 70);
+    // ignore: unused_local_variable
     Color borderColor = Color.fromARGB(255, 60, 9, 70);
 
     return Container(
