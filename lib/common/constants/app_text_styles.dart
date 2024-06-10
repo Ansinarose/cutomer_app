@@ -15,12 +15,19 @@ class AppTextStyles {
     color: AppColors.textPrimaryColor,
     fontSize: 16,
   );
+ static final TextStyle whitetext = TextStyle(
+    color: AppColors.textsecondaryColor,
+    fontSize: 24,
+    fontWeight: FontWeight.bold
+  );
 
   // White body text style with specified font size
   static final TextStyle whiteBody = TextStyle(
     color: AppColors.textsecondaryColor,
     fontSize: 16,
   );
+
+  
 
   // Subheading style with medium weight
   static final TextStyle subheading = TextStyle(

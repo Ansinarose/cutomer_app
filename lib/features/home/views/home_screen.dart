@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
          }, icon: Icon(Icons.logout,color: Colors.white,)) 
         ],
         backgroundColor: Appbarcolors.appbarbackgroundcolor,
-        title: Text('Home', style: AppTextStyles.heading),
+        title: Text('Home', style: AppTextStyles.whitetext),
       ),
       body: Center(
         child: Column(

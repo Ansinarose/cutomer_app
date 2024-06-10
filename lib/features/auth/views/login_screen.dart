@@ -9,10 +9,11 @@ import 'package:customer_application/features/auth/views/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 import '../../../common/constants/app_colors.dart';
 
 class LoginScreenWrapper extends StatelessWidget {
-  const LoginScreenWrapper({super.key});
+  const LoginScreenWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class LoginScreenWrapper extends StatelessWidget {
 }
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -33,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
@@ -44,23 +46,21 @@ class _LoginScreenState extends State<LoginScreen> {
     final authBloc = BlocProvider.of<AuthBloc>(context);
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-
-        if(state is AuthLoading){
-
+        if (state is AuthLoading) {
           return Center(
             child: CircularProgressIndicator(
-              color:Color.fromARGB(255, 60, 9, 70) ,
+              color: Color.fromARGB(255, 60, 9, 70),
             ),
           );
         }
-        if(state is Authenticated ){
+        if (state is Authenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-           });
+            Navigator.pushNamedAndRemoveUntil(context, '/carousel', (route) => false);
+          });
         }
         return Scaffold(
           appBar: CurvedAppBar(
-            title: 'Affordable and high\n quality fabrication and interiros',
+            title: 'Affordable and high\n quality fabrication and interiors',
             titleTextStyle: AppTextStyles.whiteBody,
           ),
           backgroundColor: AppColors.scaffoldBackgroundcolor,
@@ -72,14 +72,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 50), 
+                    SizedBox(height: 50),
                     Text('Login to your account', style: AppTextStyles.heading),
                     SizedBox(height: 20),
                     CustomTextFormField(
                       labelText: 'Email',
                       controller: emailController,
                       prefixIcon: Icons.email,
-                    
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
@@ -96,9 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       obscureText: true,
                       prefixIcon: Icons.lock,
-                      // textColor:  Color.fromARGB(255, 60, 9, 70),
-                      // hintColor: Color.fromARGB(255, 60, 9, 70),
-                      // borderColor:  Color.fromARGB(255, 60, 9, 70),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -112,31 +108,77 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 20),
                     Row(
                       children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'OR',
+                            style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                       SizedBox(height: 20),
+                    TextButton(
+                      style: AppButtonStyles.googleButton,
+                      onPressed: () {
+                        // Handle Google sign-in logic
+                        authBloc.add(GoogleSignInEvent());
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/google.jpeg', // Path to the Google logo
+                            height: 24.0,
+                          ),
+                          SizedBox(width: 30.0),
+                          Text('Sign in with Google'),
+                        ],
+                      ),
+                    
+                  
+                ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
                         Text(
                           'Don’t have an account?',
                           style: AppTextStyles.body,
                         ),
                         TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SignupScreenWrapper()));
-                            },
-                            child: Text(
-                              'SignUp',
-                              style: AppTextStyles.subheading,
-                            ))
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignupScreenWrapper(),
+                            ));
+                          },
+                          child: Text(
+                            'SignUp',
+                            style: AppTextStyles.subheading,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 20),
                     TextButton(
                       onPressed: () {
-
-                        authBloc.add(LoginEvent(password: passwordController.text.trim(),email: emailController.text.trim()));
+                        authBloc.add(LoginEvent(
+                          password: passwordController.text.trim(),
+                          email: emailController.text.trim(),
+                        ));
                       },
                       child: Text('Login'),
                       style: AppButtonStyles.smallButton,
-                    )
-                    // Optional: Add some spacing below the button
+                    ),
                   ],
                 ),
               ),

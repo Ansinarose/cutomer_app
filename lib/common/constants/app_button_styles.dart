@@ -58,4 +58,26 @@ class AppButtonStyles {
   ).copyWith(
     overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(0.1)),
   );
+
+
+
+    // Custom Google sign-in button style
+  static final ButtonStyle googleButton = TextButton.styleFrom(
+    foregroundColor: Color.fromARGB(255, 60, 9, 70),
+    backgroundColor: Colors.white,
+    minimumSize: Size(150, 70),
+    padding: EdgeInsets.symmetric(horizontal: 16.0),
+    textStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    shadowColor: Colors.black.withOpacity(0.2),
+    elevation: 5,
+  ).copyWith(
+    overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(0.1)),
+  );
+
 }

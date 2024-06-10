@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
         if(state is Authenticated){
       WidgetsBinding.instance.addPostFrameCallback((_) {
-         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+         Navigator.pushNamedAndRemoveUntil(context, '/carousel', (route) => false);
       });
         }
         return Scaffold(
