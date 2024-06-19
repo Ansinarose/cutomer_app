@@ -1,15 +1,101 @@
-// lib/features/home/views/home_screen.dart
+
+// import 'package:customer_application/bloc/bloc/app_bloc.dart';
+// import 'package:customer_application/bloc/bloc/app_event.dart';
+// import 'package:customer_application/common/constants/app_colors.dart';
+// import 'package:customer_application/features/profile/views/profile_screen.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class HomeScreenWrapper extends StatelessWidget {
+//   const HomeScreenWrapper({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (context) => AuthBloc(),
+//       child: HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: PreferredSize(
+//         preferredSize: Size.fromHeight(160.0), // Set the preferred height of the app bar
+//         child: AppBar(
+//           backgroundColor: AppColors.textPrimaryColor,
+//           title: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               IconButton(
+//                 onPressed: () {
+//                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileScreen() ));
+//                 },
+//                 icon: Icon(Icons.person, color: Colors.white,
+//                 size: 50,),
+//               ),
+//               // IconButton(
+//               //   onPressed: () {
+//               //   //  Handle logout
+//               //     final authBloc = BlocProvider.of<AuthBloc>(context);
+//               //     authBloc.add(LogoutEvent());
+//               //     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+//               //   },
+//               //   icon: Icon(Icons.logout),
+//               // ),
+//             ],
+//           ),
+//           flexibleSpace: Stack(
+//             children: [
+//               Positioned(
+//                 bottom: 0,
+//                 left: 16,
+//                 right: 16,
+//                 child: Container(
+//                   height: 40,
+//                   decoration: BoxDecoration(
+//                     color: AppColors.scaffoldBackgroundcolor,
+//                     borderRadius: BorderRadius.circular(0),
+//                   ),
+//                   child: Row(
+//                     children: [
+//                       SizedBox(width: 16),
+//                       Icon(Icons.search),
+//                       SizedBox(width: 8),
+//                       Expanded(
+//                         child: TextField(
+//                           decoration: InputDecoration(
+//                             hintText: 'Search...',
+//                             border: InputBorder.none,
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(width: 16),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+      
+//     );
+//   }
+// }
+
 import 'package:customer_application/bloc/bloc/app_bloc.dart';
 import 'package:customer_application/bloc/bloc/app_event.dart';
-import 'package:customer_application/common/constants/app_button_styles.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
-import 'package:customer_application/common/constants/app_text_styles.dart';
+import 'package:customer_application/features/profile/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class HomeScreenWrapper extends StatelessWidget {
-  const HomeScreenWrapper({super.key});
+  const HomeScreenWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,39 +110,67 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundcolor,
-      appBar: AppBar(
-        actions: [
-         IconButton(onPressed: (){
- 
- final authBloc=BlocProvider.of<AuthBloc>(context);
- authBloc.add(LogoutEvent());
-  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-
-//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> LoginScreen()));
-         }, icon: Icon(Icons.logout,color: Colors.white,)) 
-        ],
-        backgroundColor: Appbarcolors.appbarbackgroundcolor,
-        title: Text('Home', style: AppTextStyles.whitetext),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              style: AppButtonStyles.largeButton,
-              onPressed: () {},
-              child: Text('Large Button'),
-            ),
-            SizedBox(height: 16),
-            TextButton(
-              style: AppButtonStyles.smallButton,
-              onPressed: () {},
-              child: Text('Small Button'),
-            ),
-          ],
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(160.0), // Set the preferred height of the app bar
+        child: AppBar(
+          backgroundColor: AppColors.textPrimaryColor,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileScreen() ));
+                },
+                icon: Icon(Icons.person, color: Colors.white,
+                size: 50,),
+              ),
+              // IconButton(
+              //   onPressed: () {
+              //   //  Handle logout
+              //     final authBloc = BlocProvider.of<AuthBloc>(context);
+              //     authBloc.add(LogoutEvent());
+              //     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+              //   },
+              //   icon: Icon(Icons.logout),
+              // ),
+            ],
+          ),
+          flexibleSpace: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                left: 16,
+                right: 16,
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.scaffoldBackgroundcolor,
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 16),
+                      Icon(Icons.search),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search...',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+      
     );
   }
 }

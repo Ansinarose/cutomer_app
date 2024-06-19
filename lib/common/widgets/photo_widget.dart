@@ -70,11 +70,11 @@ class _PhotoWidgetState extends State<PhotoWidget> {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
+              border: Border.all(color: Color.fromARGB(255, 60, 9, 70)),
             ),
             child: _imageFile != null
                 ? Image.file(_imageFile!, fit: BoxFit.cover)
-                : Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+                : Icon(Icons.add_a_photo, size: 50, color: Color.fromARGB(255, 60, 9, 70)),
           ),
         ),
       ],
