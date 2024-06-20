@@ -26,3 +26,4 @@ class AuthenticatedError extends AuthState{
   AuthenticatedError({required this.message});
 
 }
+

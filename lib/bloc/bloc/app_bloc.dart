@@ -87,6 +87,10 @@ final GoogleSignIn _googleSignIn=GoogleSignIn();
         emit(AuthenticatedError(message: e.toString()));
       }
     });
+
+
+
+    
     on<GoogleSignInEvent>((event, emit) async {
   emit(AuthLoading());
   try {

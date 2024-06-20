@@ -169,15 +169,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        authBloc.add(LoginEvent(
-                          password: passwordController.text.trim(),
-                          email: emailController.text.trim(),
-                        ));
-                      },
-                      child: Text('Login'),
-                      style: AppButtonStyles.smallButton,
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          authBloc.add(LoginEvent(
+                            password: passwordController.text.trim(),
+                            email: emailController.text.trim(),
+                          ));
+                        },
+                        child: Text('Login'),
+                        style: AppButtonStyles.largeButton,
+                      ),
                     ),
                   ],
                 ),

@@ -53,7 +53,7 @@ class CarouselPage extends StatelessWidget {
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enableInfiniteScroll: true,
                   autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  viewportFraction: 0.8,
+                  viewportFraction: 0.6,
                 ),
                 items: [
                   // Add your carousel items here

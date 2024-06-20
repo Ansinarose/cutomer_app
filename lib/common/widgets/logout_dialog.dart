@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:customer_application/bloc/bloc/app_bloc.dart';
-import 'package:customer_application/bloc/bloc/app_event.dart';
+
 
 class LogoutDialog extends StatelessWidget {
   final VoidCallback onConfirmLogout;
@@ -26,7 +24,7 @@ class LogoutDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             onConfirmLogout(); // Call the callback function for logout
-            Navigator.of(context).pop(); // Close the dialog
+            // Navigator.of(context).pop(); // Close the dialog
           },
           child: Text('Logout'),
         ),
