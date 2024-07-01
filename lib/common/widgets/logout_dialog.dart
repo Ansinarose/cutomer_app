@@ -1,3 +1,4 @@
+import 'package:customer_application/common/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 
@@ -12,21 +13,20 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Logout'),
-      content: Text('Are you sure you want to logout?'),
+      title: Text('Logout',style: AppTextStyles.heading,),
+      content: Text('Are you sure you want to logout?',style: AppTextStyles.caption,),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
           },
-          child: Text('Cancel'),
+          child: Text('Cancel',style:AppTextStyles.body,),
         ),
         TextButton(
           onPressed: () {
-            onConfirmLogout(); // Call the callback function for logout
-            // Navigator.of(context).pop(); // Close the dialog
+            onConfirmLogout(); 
           },
-          child: Text('Logout'),
+          child: Text('Logout',style: AppTextStyles.body,),
         ),
       ],
     );

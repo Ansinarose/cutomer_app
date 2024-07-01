@@ -1,4 +1,5 @@
 
+import 'package:customer_application/features/auth/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthState{}
@@ -26,4 +27,3 @@ class AuthenticatedError extends AuthState{
   AuthenticatedError({required this.message});
 
 }
-

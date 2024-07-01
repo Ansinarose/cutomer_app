@@ -1,5 +1,5 @@
-// ignore_for_file: unnecessary_import
 
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_button_styles.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -8,9 +8,9 @@ import 'package:customer_application/common/constants/textform_field.dart';
 import 'package:customer_application/common/widgets/photo_widget.dart';
 import 'package:customer_application/features/profile/views/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileDetailsAddScreen extends StatefulWidget {
   const ProfileDetailsAddScreen({super.key});
@@ -22,6 +22,7 @@ class ProfileDetailsAddScreen extends StatefulWidget {
 class _ProfileDetailsAddScreenState extends State<ProfileDetailsAddScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -34,6 +35,27 @@ class _ProfileDetailsAddScreenState extends State<ProfileDetailsAddScreen> {
   final _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
   String? gender;
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<String?> _uploadImage(File image) async {
+    try {
+      final user = _auth.currentUser;
+      final ref = _storage.ref().child('customer_profile_images').child('${user?.uid}.jpg');
+      await ref.putFile(image);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +211,24 @@ class _ProfileDetailsAddScreenState extends State<ProfileDetailsAddScreen> {
                   },
                 ),
                 SizedBox(height: 10),
-                Center(child: PhotoWidget()),
+                Center(
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: _selectedImage != null
+                        ? Image.file(
+                            _selectedImage!,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey[200],
+                            child: Icon(Icons.camera_alt, color: Colors.grey[700]),
+                          ),
+                  ),
+                ),
                 SizedBox(height: 20),
                 Center(
                   child: TextButton(
@@ -198,6 +237,11 @@ class _ProfileDetailsAddScreenState extends State<ProfileDetailsAddScreen> {
                       if (_formKey.currentState!.validate()) {
                         User? user = _auth.currentUser;
                         if (user != null) {
+                          String? imageUrl;
+                          if (_selectedImage != null) {
+                            imageUrl = await _uploadImage(_selectedImage!);
+                          }
+
                           Map<String, dynamic> userData = {
                             'uid': user.uid,
                             'name': nameController.text,
@@ -208,11 +252,12 @@ class _ProfileDetailsAddScreenState extends State<ProfileDetailsAddScreen> {
                             'pincode': pincodeController.text,
                             'city': cityController.text,
                             'state': stateController.text,
+                            'image_url': imageUrl,
                           };
 
                           try {
                             await _firestore
-                                .collection('users')
+                                .collection('customer')
                                 .doc(user.uid)
                                 .set(userData);
 

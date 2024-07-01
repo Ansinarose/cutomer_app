@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:customer_application/bloc/bloc/app_bloc.dart';
 import 'package:customer_application/bloc/bloc/app_event.dart';
 import 'package:customer_application/bloc/bloc/app_state.dart';

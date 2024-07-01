@@ -22,7 +22,7 @@ backgroundColor: AppColors.scaffoldBackgroundcolor,
                height: 400,
                width: 400, 
               decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/R.png'))
+                image: DecorationImage(image: AssetImage('assets/images/R.png'))
               ),
               ),
             ),

@@ -2,13 +2,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/bloc/bloc/app_event.dart';
 import 'package:customer_application/bloc/bloc/app_state.dart';
+import 'package:customer_application/features/auth/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn _googleSignIn=GoogleSignIn();
+  final GoogleSignIn _googleSignIn=GoogleSignIn();
 
 
   AuthBloc() : super(AuthInitial()) {
@@ -43,7 +44,7 @@ final GoogleSignIn _googleSignIn=GoogleSignIn();
           final user=userCredential.user;
 
           if(user != null){
-            FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+            FirebaseFirestore.instance.collection("customer").doc(user.uid).set({
               'uid':user.uid,
               'email':user.email,
               'name':event.user.name,
@@ -118,5 +119,6 @@ final GoogleSignIn _googleSignIn=GoogleSignIn();
   }
 });
 
-  }
+
+}
 }
