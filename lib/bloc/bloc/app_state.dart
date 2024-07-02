@@ -1,4 +1,6 @@
 
+// ignore_for_file: unused_import
+
 import 'package:customer_application/features/auth/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
