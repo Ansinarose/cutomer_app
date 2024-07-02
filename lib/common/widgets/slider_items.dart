@@ -1,4 +1,4 @@
-// widgets/slider_item.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
