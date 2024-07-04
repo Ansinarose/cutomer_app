@@ -1,6 +1,6 @@
 
-
 import 'package:customer_application/common/widgets/slider_items.dart';
+import 'package:customer_application/common/widgets/category_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -25,6 +25,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedServiceId;
+  Future<List<Map<String, dynamic>>>? _categoryFuture;
+
+  void _onServiceSelected(String serviceId) {
+    setState(() {
+      selectedServiceId = serviceId;
+      _categoryFuture = _fetchCategories(serviceId);
+    });
+  }
 
   Future<List<Map<String, dynamic>>> _fetchCategories(String serviceId) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -131,63 +139,76 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('Companyservices').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection('Companyservices').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-              List<DocumentSnapshot> documents = snapshot.data!.docs;
+                    List<DocumentSnapshot> documents = snapshot.data!.docs;
 
-              return Row(
-                children: documents.map((doc) {
-                  String serviceId = doc.id;
-                  String serviceName = doc['name'];
-                  String imageUrl = doc['imageUrl'];
+                    return Row(
+                      children: documents.map((doc) {
+                        String serviceId = doc.id;
+                        String serviceName = doc['name'];
+                        String imageUrl = doc['imageUrl'];
 
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedServiceId = serviceId;
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        SliderItem(serviceName: serviceName, imageUrl: imageUrl),
-                        if (selectedServiceId == serviceId)
-                          FutureBuilder<List<Map<String, dynamic>>>(
-                            future: _fetchCategories(serviceId),
-                            builder: (context, categorySnapshot) {
-                              if (!categorySnapshot.hasData) {
-                                return Center(child: CircularProgressIndicator());
-                              }
-
-                              var categories = categorySnapshot.data!;
-                              if (categories.isEmpty) {
-                                return Text('No categories available.');
-                              }
-
-                              return Column(
-                                children: categories.map((category) {
-                                  return Text(
-                                    'Category: ${category['name']}',
-                                    style: AppTextStyles.body,
-                                  );
-                                }).toList(),
-                              );
-                            },
+                        return GestureDetector(
+                          onTap: () => _onServiceSelected(serviceId),
+                          child: SliderItem(
+                            serviceName: serviceName,
+                            imageUrl: imageUrl,
+                            isSelected: selectedServiceId == serviceId,
                           ),
-                      ],
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
+              ),
+            ),
+            if (_categoryFuture != null)
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: _categoryFuture,
+                builder: (context, categorySnapshot) {
+                  if (!categorySnapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  var categories = categorySnapshot.data!;
+                  if (categories.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text('No categories available.'),
+                    );
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: categories.map((category) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: CategoryListItem(
+                            name: category['name'],
+                            imageUrl: category['imageUrl'] ?? '',
+                          ),
+                        );
+                      }).toList(),
                     ),
                   );
-                }).toList(),
-              );
-            },
-          ),
+                },
+              ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavBar(
