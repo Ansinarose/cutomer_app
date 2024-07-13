@@ -1,6 +1,7 @@
 
 import 'package:customer_application/common/widgets/slider_items.dart';
 import 'package:customer_application/common/widgets/category_list_item.dart';
+import 'package:customer_application/features/category/views/category_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -40,7 +41,18 @@ class _HomeScreenState extends State<HomeScreen> {
         .where('serviceId', isEqualTo: serviceId)
         .get();
 
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      List<dynamic> categoryData = data['categoryData'] ?? [];
+      String imageUrl = categoryData.isNotEmpty ? categoryData[0]['imageUrl'] ?? '' : '';
+      String id = doc.id;  // Ensure the id is included in the map
+      return {
+        'id': id,
+        'name': data['name'],
+        'imageUrl': imageUrl,
+        // Add other fields as needed
+      };
+    }).toList();
   }
 
   @override
@@ -195,12 +207,29 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: categories.map((category) {
+                      children: categories.map((categorySet) {
+                        String categoryId = categorySet['id'] ?? '';
+                        if (categoryId.isEmpty) {
+                          print('Category ID is empty or null for category: ${categorySet['name']}');
+                        }
+
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: CategoryListItem(
-                            name: category['name'],
-                            imageUrl: category['imageUrl'] ?? '',
+                            name: categorySet['name'],
+                            imageUrl: categorySet['imageUrl'] ?? '',
+                            onTap: () {
+                              if (categoryId.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CategoryDetailsScreen(categoryId: categoryId),
+                                  ),
+                                );
+                              } else {
+                                print('Category ID is missing, cannot navigate.');
+                              }
+                            },
                           ),
                         );
                       }).toList(),
