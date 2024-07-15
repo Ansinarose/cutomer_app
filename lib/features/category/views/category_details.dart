@@ -23,8 +23,8 @@ class CategoryDetailsScreen extends StatelessWidget {
         automaticallyImplyLeading: false, // This hides the default back button
       ),
       Positioned(
-        top: 100, // Adjust this value to position the title where you want
-        left: 16, // Adjust left padding as needed
+        top: 100, 
+        left: 16, 
         child: SafeArea(
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance.collection('Companycategory').doc(categoryId).get(),

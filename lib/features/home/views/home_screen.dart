@@ -1,6 +1,7 @@
 
 import 'package:customer_application/common/widgets/slider_items.dart';
 import 'package:customer_application/common/widgets/category_list_item.dart';
+import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/category/views/category_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -97,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             radius: 25,
                             backgroundImage: imageUrl.isNotEmpty
                                 ? NetworkImage(imageUrl) as ImageProvider
-                                : AssetImage('assets/images/default_profile.png'),
+                                : AssetImage('assets/images/565-5657886_avatar-images-for-login-form-clipart.png'),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -243,7 +244,31 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavBar(
         initialIndex: 0,
         onTap: (index) {
-          print('Selected index: $index');
+          switch (index) {
+            case 0:
+              
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+              break;
+            // case 2:
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => PaymentsScreen()),
+            //   );
+            //   break;
+            // case 3:
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => BasketScreen()),
+            //   );
+            //   break;
+            default:
+              break;
+          }
         },
       ),
     );

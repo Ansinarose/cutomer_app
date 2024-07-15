@@ -1,4 +1,5 @@
 import 'package:customer_application/bloc/bloc/app_bloc.dart';
+import 'package:customer_application/bloc/cart_bloc.dart';
 import 'package:customer_application/features/auth/views/login_screen.dart';
 import 'package:customer_application/features/auth/views/signup_screen.dart';
 import 'package:customer_application/features/home/views/home_screen.dart';
@@ -25,8 +26,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final authBloc = AuthBloc();
-    return BlocProvider(
-      create: (context) => AuthBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(),
+        ),
+        BlocProvider<CartBloc>(
+          create: (context) => CartBloc(),
+        ),
+      ],
+      
+    
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

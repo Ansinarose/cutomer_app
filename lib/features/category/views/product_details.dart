@@ -1,10 +1,15 @@
 
 import 'dart:ffi';
 
+import 'package:customer_application/bloc/cart_bloc.dart';
+import 'package:customer_application/bloc/cart_event.dart';
 import 'package:customer_application/common/constants/app_button_styles.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/constants/app_text_styles.dart';
+import 'package:customer_application/features/booking/views/booking_screen.dart';
+import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -29,6 +34,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.textPrimaryColor,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -43,6 +59,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     widget.product['title'],
                     style: AppTextStyles.subheading,
                   ),
+                
                   SizedBox(height: 16),
                   Container(
                     height: 120,
@@ -168,11 +185,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 SizedBox(height: 20,),
                   Row(
                     children: [
-                      ElevatedButton(style: AppButtonStyles.smallButton,
-                        onPressed: (){}, child: Text('Add to cart')),
+                     ElevatedButton(
+                    style: AppButtonStyles.smallButton,
+                    onPressed: () {
+                      context.read<CartBloc>().add(AddToCartEvent(widget.product));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Added to cart')),
+                      );
+                    },
+                    child: Text('Add to cart')
+                  ),
+
                         SizedBox(width: 30,),
                       ElevatedButton(style: AppButtonStyles.smallButton,
-                        onPressed: (){}, child: Text('Book Now'))
+                        onPressed: (){
+                          Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=> BookingScreen()));
+                        }, child: Text('Book Now'))
                     ],
                   )
                 ],
