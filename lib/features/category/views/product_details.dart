@@ -200,7 +200,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ElevatedButton(style: AppButtonStyles.smallButton,
                         onPressed: (){
                           Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=> BookingScreen()));
+                          MaterialPageRoute(builder: (context)=> BookingScreen(product: widget.product,)));
                         }, child: Text('Book Now'))
                     ],
                   )

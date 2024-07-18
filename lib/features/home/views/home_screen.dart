@@ -1,8 +1,10 @@
 
 import 'package:customer_application/common/widgets/slider_items.dart';
 import 'package:customer_application/common/widgets/category_list_item.dart';
+import 'package:customer_application/features/basket/basket_screen.dart';
 import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/category/views/category_details.dart';
+import 'package:customer_application/features/notification/views/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -111,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen()));
+                  },
                   icon: Icon(Icons.notifications_active, color: Colors.white),
                 ),
               ],
@@ -260,12 +264,12 @@ class _HomeScreenState extends State<HomeScreen> {
             //     MaterialPageRoute(builder: (context) => PaymentsScreen()),
             //   );
             //   break;
-            // case 3:
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => BasketScreen()),
-            //   );
-            //   break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BasketScreen()),
+              );
+              break;
             default:
               break;
           }
