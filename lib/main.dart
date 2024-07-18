@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<CartBloc>(
           create: (context) => CartBloc(),
         ),
+       
       ],
       
     

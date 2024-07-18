@@ -116,6 +116,11 @@ class BasketScreen extends StatelessWidget {
                                           'Color: ${booking['selectedColor'] ?? 'N/A'}',
                                           style: AppTextStyles.body,
                                         ),
+                                         SizedBox(height: 4),
+                                        Text(
+                                          'Estimated work completion: ${booking['productEstimatedCompletion'] ?? 'N/A'}',
+                                          style: AppTextStyles.body,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -123,21 +128,21 @@ class BasketScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 16),
-                              Text(
-                                'How was the product experience?',
-                                style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: List.generate(5, (index) {
-                                  return Icon(
-                                    Icons.star_border,
-                                    color: Colors.amber,
-                                    size: 24,
-                                  );
-                                }),
-                              ),
+                              // Text(
+                              //   'How was the product experience?',
+                              //   style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
+                              // ),
+                              // SizedBox(height: 8),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   children: List.generate(5, (index) {
+                              //     return Icon(
+                              //       Icons.star_border,
+                              //       color: Colors.amber,
+                              //       size: 24,
+                              //     );
+                              //   }),
+                              // ),
                             ],
                           ),
                         ),

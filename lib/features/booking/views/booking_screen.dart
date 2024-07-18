@@ -349,8 +349,15 @@ Future<void> _storeBookingData() async {
         'productTitle': widget.product['title'],
         'productPrice': widget.product['price'],
         'selectedColor': selectedColor,
+        'productEstimatedCompletion':widget.product['estimatedCompletion'],
         'address': selectedAddress,
         'timestamp': FieldValue.serverTimestamp(),
+        'orderPlacedAt': FieldValue.serverTimestamp(),
+        'bookingConfirmedAt': null,
+        'workStartedAt': null,
+        'workCompletedAt': null,
+        'paymentCompletedAt': null,
+        'finishedAt': null,
       });
       
       setState(() {
