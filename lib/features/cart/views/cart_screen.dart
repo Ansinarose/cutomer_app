@@ -1,5 +1,6 @@
 import 'package:customer_application/bloc/cart_event.dart';
 import 'package:customer_application/bloc/cart_state.dart';
+import 'package:customer_application/features/cart/views/wishlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:customer_application/bloc/cart_bloc.dart';
@@ -19,6 +20,17 @@ class CartScreen extends StatelessWidget {
             AppBar(
               backgroundColor: AppColors.textPrimaryColor,
               automaticallyImplyLeading: false,
+              actions: [
+    IconButton(
+      icon: Icon(Icons.favorite, color: Colors.white),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => WishlistScreen()),
+        );
+      },
+    ),
+  ],
             ),
             Positioned(
               top: 100,
@@ -30,6 +42,7 @@ class CartScreen extends StatelessWidget {
                     'My Cart',
                     style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
+                  
                 ),
               ),
             ),

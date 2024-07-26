@@ -1,13 +1,52 @@
 
-import 'package:customer_application/common/constants/app_colors.dart';
-import 'package:customer_application/common/constants/app_text_styles.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:customer_application/common/constants/app_button_styles.dart';
+import 'package:customer_application/common/constants/app_colors.dart';
+import 'package:customer_application/common/constants/app_text_styles.dart';
+import 'package:customer_application/common/constants/textform_field.dart';
 
-class BookingDetailsScreen extends StatelessWidget {
+class BookingDetailsScreen extends StatefulWidget {
   final String bookingId;
+  final String productId;
 
-  const BookingDetailsScreen({Key? key, required this.bookingId}) : super(key: key);
+  const BookingDetailsScreen({Key? key, required this.bookingId, required this.productId}) : super(key: key);
+
+  @override
+  _BookingDetailsScreenState createState() => _BookingDetailsScreenState();
+}
+
+class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
+  final TextEditingController _reviewController = TextEditingController();
+
+ Future<void> _submitReview() async {
+  if (_reviewController.text.isNotEmpty) {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        print("Submitting review for productId: ${widget.productId}"); // Add this line for debugging
+        await FirebaseFirestore.instance.collection('customerreviews').add({
+          'bookingId': widget.bookingId,
+          'userId': user.uid,
+          'productId': widget.productId,
+          'review': _reviewController.text,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        _reviewController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Review submitted successfully')),
+        );
+      }
+    } catch (e) {
+      print("Error submitting review: $e"); // Add this line for debugging
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit review: $e')),
+      );
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +56,29 @@ class BookingDetailsScreen extends StatelessWidget {
         title: Text('Booking Details'),
         backgroundColor: AppColors.textPrimaryColor,
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('Customerbookings').doc(bookingId).get(),
+      body: 
+  //    FutureBuilder<DocumentSnapshot>(
+  // future: FirebaseFirestore.instance.collection('Customerbookings').doc(widget.bookingId).get(),
+  // builder: (context, snapshot) {
+  //   if (snapshot.connectionState == ConnectionState.waiting) {
+  //     return Center(child: CircularProgressIndicator());
+  //   }
+  //   if (snapshot.hasError) {
+  //     return Center(child: Text('Error: ${snapshot.error}'));
+  //   }
+  //   if (!snapshot.hasData || !snapshot.data!.exists) {
+  //     return Center(child: Text('Booking not found'));
+  //   }
+
+  //   var bookingData = snapshot.data!.data() as Map<String, dynamic>;
+                     StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Customerbookings')
+            .doc(widget.bookingId)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return Center(child: Text('Booking not found'));
@@ -37,7 +91,7 @@ class BookingDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Booking ID: $bookingId', style: AppTextStyles.subheading),
+                Text('Booking ID: ${widget.bookingId}', style: AppTextStyles.subheading),
                 SizedBox(height: 16),
                 Card(
                   elevation: 4,
@@ -88,10 +142,29 @@ class BookingDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Divider(color: AppColors.textPrimaryColor),
-                 SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text('Order Status', style: AppTextStyles.subheading),
                 SizedBox(height: 16),
-               _buildOrderStatus(bookingData),
+                _buildOrderStatus(bookingData),
+                SizedBox(height: 20),
+                Divider(color: AppColors.textPrimaryColor),
+                SizedBox(height: 10),
+                Text('Add a review about the product:', style: AppTextStyles.subheading),
+                SizedBox(height: 10),
+                CustomTextFormField(
+                  labelText: 'Add a review about the product',
+                  controller: _reviewController,
+                  prefixIcon: Icons.reviews,
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: ElevatedButton(
+                    style: AppButtonStyles.smallButton,
+                    onPressed: _submitReview,
+                    child: Text('Add Review'),
+                  ),
+                ),
+      
               ],
             ),
           );
@@ -99,6 +172,7 @@ class BookingDetailsScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildOrderStatus(Map<String, dynamic> bookingData) {
     List<Map<String, dynamic>> statuses = [
       {'status': 'Order Placed', 'timestamp': bookingData['orderPlacedAt']},
@@ -173,6 +247,3 @@ class OrderStatusItem extends StatelessWidget {
     );
   }
 }
-
-
-

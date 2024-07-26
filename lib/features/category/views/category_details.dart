@@ -86,12 +86,23 @@ class CategoryDetailsScreen extends StatelessWidget {
   Map<String, dynamic> product = products[index];
   return GestureDetector(
     onTap: () {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ProductDetailsScreen(product: product),
+      //   ),
+      // );
       Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductDetailsScreen(product: product),
-        ),
-      );
+  context,
+  MaterialPageRoute(
+    builder: (context) => ProductDetailsScreen(
+      product: {
+        ...product,
+        'id': product['id'] ?? 'unknown_product_id', // Ensure this field exists
+      },
+    ),
+  ),
+);
     },
     child: Card(
       elevation: 4,
@@ -176,3 +187,5 @@ class CategoryDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+

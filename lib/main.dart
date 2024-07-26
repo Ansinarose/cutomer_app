@@ -1,4 +1,6 @@
 import 'package:customer_application/bloc/bloc/app_bloc.dart';
+import 'package:customer_application/bloc/bloc/wishlist_bloc.dart';
+import 'package:customer_application/bloc/bloc/wishlist_event.dart';
 import 'package:customer_application/bloc/cart_bloc.dart';
 import 'package:customer_application/features/auth/views/login_screen.dart';
 import 'package:customer_application/features/auth/views/signup_screen.dart';
@@ -34,7 +36,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<CartBloc>(
           create: (context) => CartBloc(),
         ),
-       
+       BlocProvider(
+        create: (context) => WishlistBloc()..add(LoadWishlist()),
+        
+       )
       ],
       
     

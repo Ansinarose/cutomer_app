@@ -1,6 +1,7 @@
 
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/bloc/cart_bloc.dart';
 import 'package:customer_application/bloc/cart_event.dart';
 import 'package:customer_application/common/constants/app_button_styles.dart';
@@ -14,8 +15,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> product;
-
-  const ProductDetailsScreen({Key? key, required this.product}) : super(key: key);
+  final bookingId;
+  const ProductDetailsScreen({Key? key, required this.product, this.bookingId}) : super(key: key);
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -166,10 +167,96 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                    SizedBox(height: 16),
-                  Text(
-                    'Reviews',
-                    style: AppTextStyles.subheading,
-                  ),
+                  SizedBox(height: 20),
+                Text('Customer Reviews', style: AppTextStyles.subheading),
+                SizedBox(height: 10),
+//                 StreamBuilder<QuerySnapshot>(
+//   stream: FirebaseFirestore.instance
+//       .collection('customerreviews')
+//       .where('productId', isEqualTo: widget.product['id']) // Make sure 'id' exists in your product data
+//       .orderBy('timestamp', descending: true)
+//       .snapshots(),
+//   builder: (context, snapshot) {
+//     if (snapshot.connectionState == ConnectionState.waiting) {
+//       return Center(child: CircularProgressIndicator());
+//     }
+//     if (snapshot.hasError) {
+//       print('Error: ${snapshot.error}');
+//       return Text('Error: ${snapshot.error}');
+//     }
+//     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//       return Text('No reviews yet for this product');
+//     }
+
+//     return ListView.builder(
+//       shrinkWrap: true,
+//       physics: NeverScrollableScrollPhysics(),
+//       itemCount: snapshot.data!.docs.length,
+//       itemBuilder: (context, index) {
+//         var review = snapshot.data!.docs[index];
+//         return ListTile(
+//           subtitle: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(review['review']),
+//               Text(
+//                 'Posted on: ${(review['timestamp'] as Timestamp).toDate().toString()}',
+//                 style: TextStyle(fontSize: 12, color: Colors.grey),
+//               ),
+//             ],
+//           ),
+//           trailing: Text('Booking ID: ${review['bookingId']}'),
+//         );
+//       },
+//     );
+//   },
+// ),                                            
+                                 
+        
+      
+ StreamBuilder<QuerySnapshot>(
+  stream: FirebaseFirestore.instance
+      .collection('customerreviews')
+      .where('productId', isEqualTo: widget.product['productId'])
+      .orderBy('timestamp', descending: true)
+      .snapshots(),
+  builder: (context, snapshot) {
+    print('Product ID for reviews: ${widget.product['productId']}'); // Add this line for debugging
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(child: CircularProgressIndicator());
+    }
+    if (snapshot.hasError) {
+      print('Error in reviews: ${snapshot.error}'); // Add this line for debugging
+      return Text('Error loading reviews: ${snapshot.error}');
+    }
+    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+      return Text('No reviews yet for this product.');
+    }
+
+    print('Number of reviews: ${snapshot.data!.docs.length}'); // Add this line for debugging
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: Text('Reviews', style: AppTextStyles.subheading),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            var review = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+            print('Review data: $review'); // Add this line for debugging
+            return ReviewItem(review: review);
+          },
+        ),
+      ],
+    );
+  },
+),
+   
                   
                   SizedBox(height: 16),
                   Text(
@@ -197,11 +284,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
 
                         SizedBox(width: 30,),
-                      ElevatedButton(style: AppButtonStyles.smallButton,
-                        onPressed: (){
-                          Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=> BookingScreen(product: widget.product,)));
-                        }, child: Text('Book Now'))
+                      ElevatedButton(
+  style: AppButtonStyles.smallButton,
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookingScreen(
+          product: widget.product,
+        ),
+      ),
+    );
+  },
+  child: Text('Book Now')
+)
                     ],
                   )
                 ],
@@ -211,5 +307,37 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ),
     );
+  }
+  
+}
+class ReviewItem extends StatelessWidget {
+  final Map<String, dynamic> review;
+
+  const ReviewItem({Key? key, required this.review}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(review['review'], style: AppTextStyles.body),
+            SizedBox(height: 8),
+            Text(
+              'Posted on: ${_formatDate(review['timestamp'])}',
+              style: AppTextStyles.caption,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDate(Timestamp timestamp) {
+    DateTime date = timestamp.toDate();
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

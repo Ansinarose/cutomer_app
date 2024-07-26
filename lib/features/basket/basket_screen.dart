@@ -61,13 +61,20 @@ class BasketScreen extends StatelessWidget {
                       ),
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookingDetailsScreen(bookingId: booking.id),
-                            ),
-                          );
-                        },
+  var bookingData = booking.data() as Map<String, dynamic>;
+  String bookingId = booking.id;
+  String productId = bookingData['productId'] ?? '';
+  
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => BookingDetailsScreen(
+        bookingId: bookingId,
+        productId: productId,
+      ),
+    ),
+  );
+},
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(

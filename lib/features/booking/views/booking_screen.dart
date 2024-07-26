@@ -3,6 +3,7 @@ import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/constants/app_text_styles.dart';
 import 'package:customer_application/features/booking/views/booking_address.dart';
 import 'package:customer_application/features/home/views/home_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +26,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   void initState() {
     super.initState();
+     print('Product data in BookingScreen: ${widget.product}');
     _fetchDefaultAddress();
   }
 
@@ -337,14 +339,19 @@ class _BookingScreenState extends State<BookingScreen> {
   );
 }
 Future<void> _storeBookingData() async {
+   print('Product data: ${widget.product}'); 
   final user = FirebaseAuth.instance.currentUser;
   if (user != null && selectedAddress != null && selectedColor != null) {
     setState(() {
       _isLoading = true;
     });
     try {
+      String productId = widget.product['productId'] ?? 'unknown_product_id';
+      print('Product ID: $productId'); // Add this line for debugging
+
       await FirebaseFirestore.instance.collection('Customerbookings').add({
-        'userId': user.uid,
+       // 'userId': user.uid,
+       'userId': FirebaseAuth.instance.currentUser?.uid,
         'productImage': widget.product['imageUrl'],
         'productTitle': widget.product['title'],
         'productPrice': widget.product['price'],
@@ -358,6 +365,8 @@ Future<void> _storeBookingData() async {
         'workCompletedAt': null,
         'paymentCompletedAt': null,
         'finishedAt': null,
+        'productId': productId,
+        
       });
       
       setState(() {
