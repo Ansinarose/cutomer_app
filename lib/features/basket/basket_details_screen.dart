@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,17 +19,26 @@ class BookingDetailsScreen extends StatefulWidget {
 class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   final TextEditingController _reviewController = TextEditingController();
 
- Future<void> _submitReview() async {
+
+Future<void> _submitReview() async {
   if (_reviewController.text.isNotEmpty) {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        print("Submitting review for productId: ${widget.productId}"); // Add this line for debugging
+        // Fetch user's name from 'customer' collection
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('customer')
+            .doc(user.uid)
+            .get();
+        
+        String reviewerName = userDoc['name'] ?? 'Anonymous'; // Get the user's name, default to 'Anonymous' if not found
+
         await FirebaseFirestore.instance.collection('customerreviews').add({
           'bookingId': widget.bookingId,
           'userId': user.uid,
           'productId': widget.productId,
           'review': _reviewController.text,
+          'reviewerName': reviewerName, // Include reviewer's name
           'timestamp': FieldValue.serverTimestamp(),
         });
         _reviewController.clear();
@@ -40,7 +47,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         );
       }
     } catch (e) {
-      print("Error submitting review: $e"); // Add this line for debugging
+      print("Error submitting review: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to submit review: $e')),
       );
@@ -57,20 +64,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         backgroundColor: AppColors.textPrimaryColor,
       ),
       body: 
-  //    FutureBuilder<DocumentSnapshot>(
-  // future: FirebaseFirestore.instance.collection('Customerbookings').doc(widget.bookingId).get(),
-  // builder: (context, snapshot) {
-  //   if (snapshot.connectionState == ConnectionState.waiting) {
-  //     return Center(child: CircularProgressIndicator());
-  //   }
-  //   if (snapshot.hasError) {
-  //     return Center(child: Text('Error: ${snapshot.error}'));
-  //   }
-  //   if (!snapshot.hasData || !snapshot.data!.exists) {
-  //     return Center(child: Text('Booking not found'));
-  //   }
 
-  //   var bookingData = snapshot.data!.data() as Map<String, dynamic>;
                      StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Customerbookings')

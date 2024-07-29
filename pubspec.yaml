@@ -80,6 +80,7 @@ flutter:
   - assets/images/interior-design-violet-22273327.webp
   - assets/images/google.jpeg
   - assets/images/565-5657886_avatar-images-for-login-form-clipart.png
+  - assets/images/placeholderimage.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/features/basket/basket_screen.dart';
 import 'package:customer_application/features/cart/views/cart_screen.dart';

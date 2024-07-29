@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'package:customer_application/common/constants/app_button_styles.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/constants/app_text_styles.dart';
