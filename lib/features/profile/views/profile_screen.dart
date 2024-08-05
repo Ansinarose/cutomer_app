@@ -6,6 +6,10 @@ import 'package:customer_application/bloc/bloc/app_state.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/widgets/curved_appbar.dart';
 import 'package:customer_application/common/widgets/logout_dialog.dart';
+import 'package:customer_application/features/basket/views/basket_screen.dart';
+import 'package:customer_application/features/booking/views/booking_screen.dart';
+import 'package:customer_application/features/cart/views/cart_screen.dart';
+import 'package:customer_application/features/chat/views/chat_screen.dart';
 import 'package:customer_application/features/profile/views/profile_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,14 +51,14 @@ class ProfileScreen extends StatelessWidget {
                         title: 'Help Center',
                         icon: Icons.help,
                         onTap: () {
-                          // Handle tap
+                           Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CustomerChatScreen()));
                         },
                       ),
                       _buildListTile(
                         title: 'My Cart',
                         icon: Icons.shopping_cart,
                         onTap: () {
-                          // Handle tap
+                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CartScreen()));
                         },
                       ),
                       _buildListTile(
@@ -68,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                         title: 'My Orders',
                         icon: Icons.list_alt,
                         onTap: () {
-                          // Handle tap
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BasketScreen()));
                         },
                       ),
                       _buildListTile(

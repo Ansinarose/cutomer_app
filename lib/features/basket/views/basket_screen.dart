@@ -1,6 +1,6 @@
 import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/common/constants/app_text_styles.dart';
-import 'package:customer_application/features/basket/basket_details_screen.dart';
+import 'package:customer_application/features/basket/views/basket_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,10 +37,7 @@ class BasketScreen extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(top: 40),
-            child: 
-            // StreamBuilder<QuerySnapshot>(
-            //   stream: FirebaseFirestore.instance.collection('Customerbookings').snapshots(),
-            //   builder: (context, snapshot) {
+            child:
             StreamBuilder<QuerySnapshot>(
   stream: FirebaseFirestore.instance
       .collection('Customerbookings')
