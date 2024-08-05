@@ -21,118 +21,104 @@ class ProfileScreenWrapper extends StatelessWidget {
 }
 
 class ProfileScreen extends StatelessWidget {
-  // const ProfileScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    // Get screen height and width
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Calculate padding based on screen height
-    final topPadding = screenHeight * 0.05; // 5% of screen height
-
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.scaffoldBackgroundcolor,
           appBar: CurvedAppBar(title: ''),
-          body: Padding(
-            padding: EdgeInsets.only(top: topPadding),
-            child: ListView(
-              children: [
-                ListTile(
-                  title: Text(
-                    'Name',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  // subtitle: Text('User Name'),
-                  leading:
-                      Icon(Icons.person, color: AppColors.textPrimaryColor),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProfileDetailsAddScreen()));
-                  },
-                ),
-                Divider(height: 1, color: Colors.grey),
-                ListTile(
-                  title: Text(
-                    'Help Center',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  leading: Icon(Icons.help, color: AppColors.textPrimaryColor),
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-                Divider(height: 1, color: Colors.grey),
-                ListTile(
-                  title: Text(
-                    'My Cart',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  leading: Icon(Icons.shopping_cart,
-                      color: AppColors.textPrimaryColor),
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-                Divider(height: 1, color: Colors.grey),
-                ListTile(
-                  title: Text(
-                    'My Payments',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  leading:
-                      Icon(Icons.payment, color: AppColors.textPrimaryColor),
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-                Divider(height: 1, color: Colors.grey),
-                ListTile(
-                  title: Text(
-                    'My Orders',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  leading:
-                      Icon(Icons.list_alt, color: AppColors.textPrimaryColor),
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-                Divider(height: 1, color: Colors.grey),
-                ListTile(
-                  title: Text(
-                    'Logout',
-                    style: TextStyle(color: AppColors.textPrimaryColor),
-                  ),
-                  leading:
-                      Icon(Icons.logout, color: AppColors.textPrimaryColor),
-                  onTap: () {
-                    
-                    showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return LogoutDialog(
-                        onConfirmLogout: () {
-                        //  Perform logout logic here
-                          final authBloc = BlocProvider.of<AuthBloc>(context);
-                          authBloc.add(LogoutEvent());
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/login', (route) => false);
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                    children: [
+                      _buildListTile(
+                        title: 'Name',
+                        icon: Icons.person,
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileDetailsAddScreen()));
                         },
-                      );
-                    },
-                  );
-                  },
+                      ),
+                      _buildListTile(
+                        title: 'Help Center',
+                        icon: Icons.help,
+                        onTap: () {
+                          // Handle tap
+                        },
+                      ),
+                      _buildListTile(
+                        title: 'My Cart',
+                        icon: Icons.shopping_cart,
+                        onTap: () {
+                          // Handle tap
+                        },
+                      ),
+                      _buildListTile(
+                        title: 'My Payments',
+                        icon: Icons.payment,
+                        onTap: () {
+                          // Handle tap
+                        },
+                      ),
+                      _buildListTile(
+                        title: 'My Orders',
+                        icon: Icons.list_alt,
+                        onTap: () {
+                          // Handle tap
+                        },
+                      ),
+                      _buildListTile(
+                        title: 'Logout',
+                        icon: Icons.logout,
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return LogoutDialog(
+                                onConfirmLogout: () {
+                                  final authBloc = BlocProvider.of<AuthBloc>(context);
+                                  authBloc.add(LogoutEvent());
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, '/login', (route) => false);
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
+    );
+  }
+
+  Widget _buildListTile({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            title,
+            style: TextStyle(color: AppColors.textPrimaryColor),
+          ),
+          leading: Icon(icon, color: AppColors.textPrimaryColor),
+          trailing: Icon(Icons.arrow_forward_ios),
+          onTap: onTap,
+        ),
+        Divider(height: 1, color: Colors.grey),
+      ],
     );
   }
 }

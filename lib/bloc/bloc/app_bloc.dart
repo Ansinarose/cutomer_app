@@ -35,31 +35,68 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
 
 
-    on<SignupEvent>(((event, emit) async {
-      emit(AuthLoading());
+    // on<SignupEvent>(((event, emit) async {
+    //   emit(AuthLoading());
 
-      try{
-        final userCredential = await _auth.createUserWithEmailAndPassword(
-          email: event.user.email.toString(), 
-          password: event.user.password.toString());
+    //   try{
+    //     final userCredential = await _auth.createUserWithEmailAndPassword(
+    //       email: event.user.email.toString(), 
+    //       password: event.user.password.toString());
 
-          final user=userCredential.user;
+    //       final user=userCredential.user;
 
-          if(user != null){
-            FirebaseFirestore.instance.collection("customer").doc(user.uid).set({
-              'uid':user.uid,
-              'email':user.email,
-              'name':event.user.name,
-              'createdAt':DateTime.now()
-            });
-            emit(Authenticated(user));
-          }else{
-            emit(UnAuthenticated());
-          }
-      }catch(e){
-        emit(AuthenticatedError(message: e.toString()));
-      }
-    }));
+    //       if(user != null){
+    //         FirebaseFirestore.instance.collection("customer").doc(user.uid).set({
+    //           'uid':user.uid,
+    //           'email':user.email,
+    //           'name':event.user.name,
+    //           'createdAt':DateTime.now()
+    //         });
+    //         emit(Authenticated(user));
+    //       }else{
+    //         emit(UnAuthenticated());
+    //       }
+    //   }catch(e){
+    //     emit(AuthenticatedError(message: e.toString()));
+    //   }
+    // }));
+    on<SignupEvent>((event, emit) async {
+  emit(AuthLoading());
+  try {
+    final userCredential = await _auth.createUserWithEmailAndPassword(
+      email: event.user.email.toString(),
+      password: event.user.password.toString(),
+    );
+    final user = userCredential.user;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection("customer").doc(user.uid).set({
+        'uid': user.uid,
+        'email': user.email,
+        'name': event.user.name,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      emit(Authenticated(user));
+    } else {
+      emit(UnAuthenticated());
+    }
+  } on FirebaseAuthException catch (e) {
+    switch (e.code) {
+      case 'invalid-email':
+        emit(AuthenticatedError(message: 'The email address is badly formatted.'));
+        break;
+      case 'email-already-in-use':
+        emit(AuthenticatedError(message: 'The email address is already in use by another account.'));
+        break;
+      case 'weak-password':
+        emit(AuthenticatedError(message: 'The password provided is too weak.'));
+        break;
+      default:
+        emit(AuthenticatedError(message: e.message ?? 'An error occurred during signup'));
+    }
+  } catch (e) {
+    emit(AuthenticatedError(message: 'An unexpected error occurred'));
+  }
+});
 
     on<LoginEvent>(((event, emit)  async{
       
