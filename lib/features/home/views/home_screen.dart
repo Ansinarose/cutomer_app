@@ -6,6 +6,7 @@ import 'package:customer_application/common/widgets/chat_floatingaction_button.d
 import 'package:customer_application/common/widgets/highlights_carousel.dart';
 import 'package:customer_application/common/widgets/seviceSlider.dart';
 import 'package:customer_application/features/basket/views/basket_screen.dart';
+import 'package:customer_application/features/payment/views/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -109,6 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+              break;
+               case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PaymentsScreen()),
               );
               break;
             case 3:

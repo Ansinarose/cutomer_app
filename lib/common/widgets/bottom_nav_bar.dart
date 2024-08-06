@@ -4,6 +4,7 @@ import 'package:customer_application/common/constants/app_colors.dart';
 import 'package:customer_application/features/basket/views/basket_screen.dart';
 import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/home/views/home_screen.dart';
+import 'package:customer_application/features/payment/views/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -33,12 +34,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           MaterialPageRoute(builder: (context) => CartScreen()),
         );
         break;
-      // case 2:
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => PaymentsScreen()),
-      //   );
-      //  break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PaymentsScreen()),
+        );
+       break;
       case 3:
         Navigator.push(
           context,
