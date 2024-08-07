@@ -33,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedServiceId;
   Future<List<Map<String, dynamic>>>? _categoryFuture;
   Future<List<String>>? _highlightsFuture;
+ String _searchQuery = '';
+
 
   @override
   void initState() {
@@ -40,6 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _highlightsFuture = _fetchHighlights();
   }
 
+
+void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+    });
+  }
   void _onServiceSelected(String serviceId) {
     setState(() {
       selectedServiceId = serviceId;
@@ -80,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 234, 247),
-      appBar: AppBarWidget(),
+      appBar: AppBarWidget(onSearchChanged: _onSearchChanged),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
             if (selectedServiceId == null)
               HighlightsCarousel(highlightsFuture: _highlightsFuture!),
             if (_categoryFuture != null)
-              CategoryList(categoryFuture: _categoryFuture!),
+              CategoryList(categoryFuture: _categoryFuture!,
+              searchQuery: _searchQuery,),
           ],
         ),
       ),
@@ -132,3 +141,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

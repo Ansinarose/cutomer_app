@@ -7,6 +7,8 @@ import 'package:customer_application/features/profile/views/profile_screen.dart'
 import 'package:customer_application/features/notification/views/notification_screen.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  final Function(String) onSearchChanged;
+   AppBarWidget({Key? key, required this.onSearchChanged}) : super(key: key);
   @override
   Size get preferredSize => Size.fromHeight(160.0);
 
@@ -98,6 +100,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                         hintText: 'Search...',
                         border: InputBorder.none,
                       ),
+                      onChanged: onSearchChanged,
                     ),
                   ),
                 ],
@@ -106,6 +109,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+    
     );
   }
 }

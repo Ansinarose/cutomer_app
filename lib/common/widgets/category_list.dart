@@ -4,8 +4,13 @@ import 'package:customer_application/features/category/views/category_details.da
 
 class CategoryList extends StatelessWidget {
   final Future<List<Map<String, dynamic>>> categoryFuture;
+  final String searchQuery;
 
-  const CategoryList({Key? key, required this.categoryFuture}) : super(key: key);
+  const CategoryList({
+    Key? key,
+    required this.categoryFuture,
+    required this.searchQuery,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +22,13 @@ class CategoryList extends StatelessWidget {
         }
 
         var categories = categorySnapshot.data!;
-        if (categories.isEmpty) {
+        var filteredCategories = categories.where((category) =>
+            category['name'].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+
+        if (filteredCategories.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('No categories available.'),
+            child: Text('No matching categories found.'),
           );
         }
 
@@ -28,7 +36,7 @@ class CategoryList extends StatelessWidget {
           padding: const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: categories.map((categorySet) {
+            children: filteredCategories.map((categorySet) {
               String categoryId = categorySet['id'] ?? '';
               if (categoryId.isEmpty) {
                 print('Category ID is empty or null for category: ${categorySet['name']}');
