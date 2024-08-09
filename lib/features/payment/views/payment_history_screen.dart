@@ -14,7 +14,7 @@ class PaymentHistoryScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
         backgroundColor: AppColors.textPrimaryColor,
-        title: Text('Payment History',style: AppTextStyles.whiteBody,),
+        title: Text('Payment History', style: AppTextStyles.whiteBody),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -36,17 +36,26 @@ class PaymentHistoryScreen extends StatelessWidget {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var payment = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-              // Convert the amount to a double, or use 0 if it's not a valid number
               double amount = double.tryParse(payment['amount'].toString()) ?? 0;
+              DateTime date = DateTime.parse(payment['date']);
+              
               return Card(
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
                   title: Text('Amount: ${currencyFormat.format(amount)}'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  subtitle: Text('ID: ${payment['paymentId']}'),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Date: ${_formatDate(payment['date'])}'),
-                      Text('ID: ${payment['paymentId']}'),
+                      Text(
+                        DateFormat('MMM-dd-yyyy').format(date),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        DateFormat('HH:mm').format(date),
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ],
                   ),
                 ),
@@ -56,10 +65,5 @@ class PaymentHistoryScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  String _formatDate(String dateString) {
-    DateTime date = DateTime.parse(dateString);
-    return DateFormat('yyyy-MM-dd HH:mm').format(date);
   }
 }

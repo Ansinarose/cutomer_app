@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
+import 'package:customer_application/common/constants/app_text_styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Make sure to add this package to your pubspec.yaml
+import 'package:intl/intl.dart'; 
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -13,7 +14,7 @@ class NotificationScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
         backgroundColor: AppColors.textPrimaryColor,
-        title: Text('Notifications'),
+        title: Text('Notifications',style: AppTextStyles.whiteBody,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

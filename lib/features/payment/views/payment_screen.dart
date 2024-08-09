@@ -4,21 +4,51 @@ import 'package:customer_application/common/constants/app_text_styles.dart';
 import 'package:customer_application/features/payment/views/payment_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:customer_application/services/razorpay_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PaymentsScreen extends StatefulWidget {
+  final String bookingId;
+
+  const PaymentsScreen({Key? key, required this.bookingId}) : super(key: key);
+
   @override
   _PaymentsScreenState createState() => _PaymentsScreenState();
 }
 
 class _PaymentsScreenState extends State<PaymentsScreen> {
-  final RazorpayService _razorpayService = RazorpayService();
+  late RazorpayService _razorpayService;
   final TextEditingController _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpayService = RazorpayService(context);
+    _razorpayService.onPaymentSuccess = _onPaymentSuccess;
+  }
 
   @override
   void dispose() {
     _razorpayService.dispose();
     _amountController.dispose();
     super.dispose();
+  }
+
+  void _onPaymentSuccess() async {
+    // Update the payment status and finished status in Firestore
+    await FirebaseFirestore.instance
+        .collection('Customerbookings')
+        .doc(widget.bookingId)
+        .update({
+      'paymentCompletedAt': FieldValue.serverTimestamp(),
+      'finishedAt': FieldValue.serverTimestamp(),
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Payment completed successfully')),
+    );
+
+    // Navigate back to the BookingDetailsScreen
+    Navigator.pop(context);
   }
 
   @override
@@ -66,7 +96,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                 }
               },
             ),
-            SizedBox(height: 50,),
+            SizedBox(height: 50),
             TextButton(
               onPressed: () {
                 Navigator.of(context).push(

@@ -140,21 +140,6 @@ class BasketScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 16),
-                              // Text(
-                              //   'How was the product experience?',
-                              //   style: AppTextStyles.body.copyWith(fontWeight: FontWeight.bold),
-                              // ),
-                              // SizedBox(height: 8),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.start,
-                              //   children: List.generate(5, (index) {
-                              //     return Icon(
-                              //       Icons.star_border,
-                              //       color: Colors.amber,
-                              //       size: 24,
-                              //     );
-                              //   }),
-                              // ),
                             ],
                           ),
                         ),

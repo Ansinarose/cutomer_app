@@ -1,3 +1,5 @@
+import 'package:customer_application/common/widgets/item_status.dart';
+import 'package:customer_application/features/payment/views/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,53 +21,15 @@ class BookingDetailsScreen extends StatefulWidget {
 class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   final TextEditingController _reviewController = TextEditingController();
 
-
-Future<void> _submitReview() async {
-  if (_reviewController.text.isNotEmpty) {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        // Fetch user's name from 'customer' collection
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('customer')
-            .doc(user.uid)
-            .get();
-        
-        String reviewerName = userDoc['name'] ?? 'Anonymous'; // Get the user's name, default to 'Anonymous' if not found
-
-        await FirebaseFirestore.instance.collection('customerreviews').add({
-          'bookingId': widget.bookingId,
-          'userId': user.uid,
-          'productId': widget.productId,
-          'review': _reviewController.text,
-          'reviewerName': reviewerName, // Include reviewer's name
-          'timestamp': FieldValue.serverTimestamp(),
-        });
-        _reviewController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Review submitted successfully')),
-        );
-      }
-    } catch (e) {
-      print("Error submitting review: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to submit review: $e')),
-      );
-    }
-  }
-}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
-        title: Text('Booking Details'),
+        title: Text('Booking Details', style: AppTextStyles.whiteBody),
         backgroundColor: AppColors.textPrimaryColor,
       ),
-      body: 
-
-                     StreamBuilder<DocumentSnapshot>(
+      body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Customerbookings')
             .doc(widget.bookingId)
@@ -158,7 +122,18 @@ Future<void> _submitReview() async {
                     child: Text('Add Review'),
                   ),
                 ),
-      
+                Text('Pay Now:', style: AppTextStyles.subheading,),
+                Center(
+                  child: ElevatedButton(
+                    style: AppButtonStyles.smallButton,
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PaymentsScreen(bookingId: widget.bookingId),
+                      ));
+                    },
+                    child: Text('Pay Now')
+                  ),
+                )
               ],
             ),
           );
@@ -188,56 +163,38 @@ Future<void> _submitReview() async {
       }).toList(),
     );
   }
-}
 
-class OrderStatusItem extends StatelessWidget {
-  final String status;
-  final DateTime? timestamp;
-  final bool isActive;
+  Future<void> _submitReview() async {
+    if (_reviewController.text.isNotEmpty) {
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection('customer')
+              .doc(user.uid)
+              .get();
+          
+          String reviewerName = userDoc['name'] ?? 'Anonymous'; 
 
-  const OrderStatusItem({
-    Key? key, 
-    required this.status, 
-    this.timestamp, 
-    required this.isActive
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isActive ? AppColors.textPrimaryColor : Colors.grey,
-              ),
-            ),
-            if (status != 'Finished')
-              Container(
-                width: 2,
-                height: 40,
-                color: isActive ? AppColors.textPrimaryColor : Colors.grey,
-              ),
-          ],
-        ),
-        SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(status, style: isActive ? AppTextStyles.subheading : AppTextStyles.body),
-            if (timestamp != null)
-              Text(
-                '${timestamp!.day}/${timestamp!.month}/${timestamp!.year} ${timestamp!.hour}:${timestamp!.minute}',
-                style: AppTextStyles.caption,
-              ),
-          ],
-        ),
-      ],
-    );
+          await FirebaseFirestore.instance.collection('customerreviews').add({
+            'bookingId': widget.bookingId,
+            'userId': user.uid,
+            'productId': widget.productId,
+            'review': _reviewController.text,
+            'reviewerName': reviewerName,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+          _reviewController.clear();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Review submitted successfully')),
+          );
+        }
+      } catch (e) {
+        print("Error submitting review: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to submit review: $e')),
+        );
+      }
+    }
   }
 }

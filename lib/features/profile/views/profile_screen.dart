@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, unused_import
 
 import 'package:customer_application/bloc/bloc/app_bloc.dart';
 import 'package:customer_application/bloc/bloc/app_event.dart';
