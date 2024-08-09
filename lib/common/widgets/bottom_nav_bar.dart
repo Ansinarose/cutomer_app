@@ -6,6 +6,7 @@ import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/home/views/home_screen.dart';
 import 'package:customer_application/features/payment/views/payment_history_screen.dart';
 import 'package:customer_application/features/payment/views/payment_screen.dart';
+import 'package:customer_application/features/profile/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -38,7 +39,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PaymentHistoryScreen()
+          MaterialPageRoute(builder: (context) =>ProfileScreen()
           )
         );
        break;
@@ -62,7 +63,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       items: <Widget>[
         Icon(Icons.home, size: 26, color: Colors.white),
         Icon(Icons.shopping_cart, size: 26, color: Colors.white,),
-        Icon(Icons.payments_sharp, size: 26, color: Colors.white),
+        Icon(Icons.settings, size: 26, color: Colors.white),
         Icon(Icons.shopping_basket,size: 26,color: Colors.white,),
       //  Icon(Icons.settings, size: 26, color: Colors.white),
       ],

@@ -10,6 +10,7 @@ import 'package:customer_application/features/basket/views/basket_details.dart';
 import 'package:customer_application/features/basket/views/basket_screen.dart';
 import 'package:customer_application/features/payment/views/payment_history_screen.dart';
 import 'package:customer_application/features/payment/views/payment_screen.dart';
+import 'package:customer_application/features/profile/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:customer_application/common/constants/app_colors.dart';
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PaymentHistoryScreen()), // Changed this line
+                MaterialPageRoute(builder: (context) =>ProfileScreen()), 
               );
               break;
             case 3:

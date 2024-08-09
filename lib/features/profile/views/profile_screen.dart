@@ -10,6 +10,7 @@ import 'package:customer_application/features/basket/views/basket_screen.dart';
 import 'package:customer_application/features/booking/views/booking_screen.dart';
 import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/chat/views/chat_screen.dart';
+import 'package:customer_application/features/payment/views/payment_history_screen.dart';
 import 'package:customer_application/features/profile/views/profile_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                         title: 'My Payments',
                         icon: Icons.payment,
                         onTap: () {
-                          // Handle tap
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PaymentHistoryScreen()));
                         },
                       ),
                       _buildListTile(

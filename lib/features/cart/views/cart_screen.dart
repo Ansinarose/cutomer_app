@@ -12,41 +12,9 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundcolor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(160.0),
-        child: Stack(
-          children: [
-            AppBar(
-              backgroundColor: AppColors.textPrimaryColor,
-              automaticallyImplyLeading: false,
-              
-            ),
-            Positioned(
-              top: 100,
-              left: 16,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 60.0),
-                  child: Text(
-                    'My Cart',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  
-                ),
-              ),
-            ),
-            Positioned(
-              top: 90,
-              child: SafeArea(
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      appBar: AppBar(backgroundColor: AppColors.textPrimaryColor,
+      title: Text('My Cart',style: AppTextStyles.whiteBody,)
+      ,),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartLoaded) {
