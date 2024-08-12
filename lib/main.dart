@@ -3,7 +3,6 @@ import 'package:customer_application/bloc/cart_bloc.dart';
 import 'package:customer_application/features/auth/views/login_screen.dart';
 import 'package:customer_application/features/auth/views/signup_screen.dart';
 import 'package:customer_application/features/home/views/home_screen.dart';
-import 'package:customer_application/features/onboarding/views/carousel_page.dart';
 import 'package:customer_application/features/profile/views/profile_screen.dart';
 import 'package:customer_application/features/splash/views/splash_screen.dart';
 import 'package:customer_application/firebase_options.dart';
@@ -52,7 +51,6 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginScreenWrapper(),
           '/home': (context) => HomeScreenWrapper(),
           '/signup': (context) => SignupScreenWrapper(),
-          '/carousel': (context) => CarouselPage(),
         },
       ),
     );

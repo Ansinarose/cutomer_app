@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as c;
 import 'package:customer_application/common/constants/app_colors.dart';
 
 class HighlightsCarousel extends StatelessWidget {
@@ -34,8 +34,8 @@ class HighlightsCarousel extends StatelessWidget {
                   ),
                 ),
               ),
-              CarouselSlider(
-                options: CarouselOptions(
+              c.CarouselSlider(
+                options: c.CarouselOptions(
                   height: 200.0,
                   aspectRatio: 16/9,
                   viewportFraction: 0.8,

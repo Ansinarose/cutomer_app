@@ -1,6 +1,7 @@
+import 'package:customer_application/common/constants/app_colors.dart';
+import 'package:customer_application/common/widgets/slider_items.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:customer_application/common/widgets/slider_items.dart';
 
 class ServiceSlider extends StatelessWidget {
   final String? selectedServiceId;

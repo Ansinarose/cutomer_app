@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         if (state is Authenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushNamedAndRemoveUntil(context, '/carousel', (route) => false);
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
           });
         }
         return Scaffold(
