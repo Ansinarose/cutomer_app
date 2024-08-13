@@ -139,7 +139,9 @@ class _BookingScreenState extends State<BookingScreen> {
         });
         
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Booking successful!')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor: AppColors.textPrimaryColor,
+            content: Text('Booking successful!',style: AppTextStyles.whiteBody,)));
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomeScreen()),
           (Route<dynamic> route) => false,

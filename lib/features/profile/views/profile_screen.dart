@@ -11,7 +11,9 @@ import 'package:customer_application/features/booking/views/booking_screen.dart'
 import 'package:customer_application/features/cart/views/cart_screen.dart';
 import 'package:customer_application/features/chat/views/chat_screen.dart';
 import 'package:customer_application/features/payment/views/payment_history_screen.dart';
+import 'package:customer_application/features/privacy_policy/views/privacy_policy_screen.dart';
 import 'package:customer_application/features/profile/views/profile_details_screen.dart';
+import 'package:customer_application/features/terms_conditions/view/termsand_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -74,6 +76,20 @@ class ProfileScreen extends StatelessWidget {
                         icon: Icons.list_alt,
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BasketScreen()));
+                        },
+                      ),
+                        _buildListTile(
+                        title: 'Privacy Policy',
+                        icon: Icons.list_alt,
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PrivacyPolicyScreen()));
+                        },
+                      ),
+                        _buildListTile(
+                        title: 'Terms & Conditions',
+                        icon: Icons.list_alt,
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TermsAndConditionsScreen()));
                         },
                       ),
                       _buildListTile(
